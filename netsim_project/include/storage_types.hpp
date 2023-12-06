@@ -1,0 +1,5 @@
+#ifndef STORAGE_TYPES_HPP_
+#define STORAGE_TYPES_HPP_
+
+
+#endif /* STORAGE_TYPES_HPP_ */
