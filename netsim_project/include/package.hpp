@@ -3,4 +3,8 @@
 
 #include "types.hpp"
 
+class Package {
+
+};
+
 #endif /* PACKAGE_HPP_ */
