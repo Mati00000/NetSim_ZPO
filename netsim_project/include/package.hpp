@@ -9,8 +9,8 @@ public:
     Package();
     explicit Package(ElementID ID) : ID_(ID) { assigned_IDs.insert(ID_); }
     Package(Package &&package)  noexcept : ID_(package.ID_) {}
-    ElementID get_id() const { return ID_; }
     Package &operator=(Package &&package) noexcept ;
+    ElementID get_id() const { return ID_; }
     ~Package();
 
 private:
