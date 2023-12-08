@@ -1,11 +1,14 @@
 #include "package.hpp"
 
+std::set<ElementID> Package::freed_IDs;
+std::set<ElementID> Package::assigned_IDs;
+
 Package::~Package() {
     assigned_IDs.erase(ID_);
     freed_IDs.insert(ID_);
 }
 Package::Package() {
-    if(!freed_IDs.empty()){
+    if(freed_IDs.empty()){
         if(!assigned_IDs.empty()){
             ID_ = *(assigned_IDs.rbegin()) + 1;
             assigned_IDs.insert(ID_);
