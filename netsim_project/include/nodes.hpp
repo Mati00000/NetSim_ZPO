@@ -11,6 +11,10 @@
 #include <optional>
 #include <memory>
 
+enum class ReceiverType {
+    WORKER, STOREHOUSE
+};
+
 
 class IPackageReceiver{
 public:
@@ -83,6 +87,10 @@ public:
     const_iterator begin() const override { return d_->begin(); }
     const_iterator end() const override { return d_->end(); }
 
+    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
+    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
+    #endif
+
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
 
@@ -106,6 +114,10 @@ public:
     void do_work(Time t);
     TimeOffset get_processing_duration() const { return pd_; }
     Time get_package_processing_start_time() const { return t_; }
+
+    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
+    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
+    #endif
 
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
