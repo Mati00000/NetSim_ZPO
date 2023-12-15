@@ -1,12 +1,15 @@
 #ifndef NODES_HPP_
 #define NODES_HPP_
 
+#include "config.hpp"
 #include "types.hpp"
 #include "package.hpp"
 #include "storage_types.hpp"
 #include "helpers.hpp"
 
 #include <map>
+#include <optional>
+#include <memory>
 
 
 class IPackageReceiver{
@@ -18,17 +21,20 @@ public:
     virtual const_iterator begin() const = 0;
     virtual const_iterator end() const = 0;
 
-    virtual void receive_package(Package &&p) = 0;
+    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
+    virtual ReceiverType get_receiver_type() const = 0;
+    #endif
+
     virtual ElementID get_id() const = 0;
+    virtual void receive_package(Package &&p) = 0;
 
     virtual ~IPackageReceiver() = default;
 };
 
-template <typename PreferenceType = double>
 
 class ReceiverPreferences {
 public:
-    using preferences_t = std::map<IPackageReceiver*, PreferenceType>;
+    using preferences_t = std::map<IPackageReceiver*, double>;
     using const_iterator = typename preferences_t::const_iterator;
 
     explicit ReceiverPreferences(ProbabilityGenerator pg = probability_generator): pg_(std::move(pg)) {};
@@ -48,6 +54,7 @@ private:
     preferences_t preferences_t_;
 };
 
+
 class PackageSender {
 public:
     ReceiverPreferences receiver_preferences_;
@@ -63,6 +70,7 @@ protected:
 private:
     std::optional<Package> bufor_ = std::nullopt;
 };
+
 
 class Storehouse : public IPackageReceiver {
 public:
@@ -82,6 +90,7 @@ private:
     ElementID id_;
     std::unique_ptr<IPackageStockpile> d_;
 };
+
 
 class Worker : public IPackageReceiver, public PackageSender {
 public:
