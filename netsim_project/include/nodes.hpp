@@ -11,11 +11,6 @@
 #include <optional>
 #include <memory>
 
-enum class ReceiverType {
-    WORKER, STOREHOUSE
-};
-
-
 class IPackageReceiver{
 public:
     using const_iterator = typename IPackageStockpile::const_iterator;
@@ -24,10 +19,6 @@ public:
     virtual const_iterator cend() const = 0;
     virtual const_iterator begin() const = 0;
     virtual const_iterator end() const = 0;
-
-    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
-    virtual ReceiverType get_receiver_type() const = 0;
-    #endif
 
     virtual ElementID get_id() const = 0;
     virtual void receive_package(Package &&p) = 0;
@@ -87,10 +78,6 @@ public:
     const_iterator begin() const override { return d_->begin(); }
     const_iterator end() const override { return d_->end(); }
 
-    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
-    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
-    #endif
-
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
 
@@ -114,10 +101,6 @@ public:
     void do_work(Time t);
     TimeOffset get_processing_duration() const { return pd_; }
     Time get_package_processing_start_time() const { return t_; }
-
-    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
-    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
-    #endif
 
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
