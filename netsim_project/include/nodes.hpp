@@ -27,9 +27,9 @@ public:
     virtual ElementID get_id() const = 0;
     virtual void receive_package(Package &&p) = 0;
 
-    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
+//    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
     virtual ReceiverType get_receiver_type() const = 0;
-    #endif
+//    #endif
 
     virtual ~IPackageReceiver() = default;
 };
@@ -89,9 +89,9 @@ public:
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
 
-    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
+//    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
     ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
-    #endif
+//    #endif
 
 private:
     ElementID id_;

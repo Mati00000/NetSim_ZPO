@@ -53,17 +53,67 @@ void Factory::remove_storehouse(ElementID id) {
 
 enum class node_colour { NOT_VISITED, VISITED, CHECKED }; /// nwm czy to ma być zdefiniowane w metodzie czy poza nią i czy w tym pliku czy w nagłówkowym
 
+
+bool is_storehouse_achievable(const PackageSender *node, std::map<const PackageSender *, node_colour> &node_states) {
+    if (node_states[node] == node_colour::CHECKED) {
+        return true;
+    }
+    node_states[node] = node_colour::VISITED;
+
+    if (node->receiver_preferences_.get_preferences().empty()) {
+        throw std::logic_error("No receivers");
+    }
+
+    bool has_receiver = false;
+    for (auto &receiver: node->receiver_preferences_.get_preferences()) {
+        if (receiver.first->get_receiver_type() == ReceiverType::STOREHOUSE) {
+            has_receiver = true;
+        } else if (receiver.first->get_receiver_type() == ReceiverType::WORKER) {
+            IPackageReceiver *receiver_ptr = receiver.first;
+            auto worker_ptr = dynamic_cast<Worker *>(receiver_ptr);
+            auto sendrecv_ptr = dynamic_cast<PackageSender *>(worker_ptr);
+            if (sendrecv_ptr == node) {
+                continue;
+            }
+            has_receiver = true;
+            if (node_states[sendrecv_ptr] == node_colour::NOT_VISITED) {
+                is_storehouse_achievable(sendrecv_ptr, node_states);
+            }
+        }
+    }
+
+    node_states[node] = node_colour::CHECKED;
+
+    if (!has_receiver) {
+        throw std::logic_error("No receiver");
+    }
+    return true;
+}
+
 bool Factory::is_consistent() const { /// not finished
+    std::map<const PackageSender *, node_colour> map;
+    for (const PackageSender &ramp: ramp_) {
+        map[&ramp] = node_colour::NOT_VISITED;
+    }
 
-
-    return false;
+    for (const PackageSender &worker: worker_) {
+        map[&worker] = node_colour::NOT_VISITED;
+    }
+    try {
+        for (const PackageSender &ramp: ramp_) {
+            is_storehouse_achievable(&ramp, map);
+        }
+    }
+    catch (...) {
+        return false;
+    }
+    return true;
 }
 
 void Factory::do_deliveries(Time time) {
     for(auto e = ramp_.begin(); e != ramp_.end(); e++){
         e->deliver_goods(time);
     }
-
 }
 
 void Factory::do_work(Time time) {
