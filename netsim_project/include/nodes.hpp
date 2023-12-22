@@ -19,6 +19,8 @@ class IPackageReceiver{
 public:
     using const_iterator = typename IPackageStockpile::const_iterator;
 
+    virtual ReceiverType get_receiver_type() const = 0;
+
     virtual const_iterator cbegin() const = 0;
     virtual const_iterator cend() const = 0;
     virtual const_iterator begin() const = 0;
@@ -26,10 +28,6 @@ public:
 
     virtual ElementID get_id() const = 0;
     virtual void receive_package(Package &&p) = 0;
-
-//    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
-    virtual ReceiverType get_receiver_type() const = 0;
-//    #endif
 
     virtual ~IPackageReceiver() = default;
 };
@@ -89,9 +87,7 @@ public:
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
 
-//    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
     ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
-//    #endif
 
 private:
     ElementID id_;
@@ -117,9 +113,7 @@ public:
     void receive_package(Package &&p) override;
     ElementID get_id() const override { return id_; }
 
-    #if (defined EXERCISE_ID && EXERCISE_ID != EXERCISE_ID_NODES)
-    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
-    #endif
+    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; };
 
 private:
     ElementID id_;

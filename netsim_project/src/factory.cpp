@@ -8,7 +8,7 @@ void NodeCollection<Node>::add(Node&& node) {
 template <typename Node>
 void NodeCollection<Node>::remove_by_id(ElementID id) {
     auto it = find_by_id(id);
-    if (it != end()) {
+    if (it != nodes_.end()) {
         nodes_.erase(it);
     }
 }
@@ -51,7 +51,7 @@ void Factory::remove_storehouse(ElementID id) {
     storehouse_.remove_by_id(id);
 }
 
-enum class node_colour { NOT_VISITED, VISITED, CHECKED }; /// nwm czy to ma być zdefiniowane w metodzie czy poza nią i czy w tym pliku czy w nagłówkowym
+enum class node_colour { NOT_VISITED, VISITED, CHECKED };
 
 
 bool is_storehouse_achievable(const PackageSender *node, std::map<const PackageSender *, node_colour> &node_states) {
@@ -90,7 +90,7 @@ bool is_storehouse_achievable(const PackageSender *node, std::map<const PackageS
     return true;
 }
 
-bool Factory::is_consistent() const { /// not finished
+bool Factory::is_consistent() const {
     std::map<const PackageSender *, node_colour> map;
     for (const PackageSender &ramp: ramp_) {
         map[&ramp] = node_colour::NOT_VISITED;
