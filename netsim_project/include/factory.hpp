@@ -47,7 +47,7 @@ public:
     void add_worker(Worker&& worker);
     void remove_worker(ElementID id);
 
-    NodeCollection<Worker>::iterator find_worker_by_id(ElementID id);
+    NodeCollection<Worker>::iterator find_worker_by_id(ElementID id) { return worker_.find_by_id(id); }
     NodeCollection<Worker>::const_iterator find_worker_by_id(ElementID id) const { return worker_.find_by_id(id); }
     NodeCollection<Worker>::const_iterator worker_cbegin() const { return worker_.cbegin(); }
     NodeCollection<Worker>::const_iterator worker_cend() const { return worker_.cend(); }
@@ -56,7 +56,7 @@ public:
     void add_storehouse(Storehouse&& storehouse);
     void remove_storehouse(ElementID id);
 
-    NodeCollection<Storehouse>::iterator find_storehouse_by_id(ElementID id);
+    NodeCollection<Storehouse>::iterator find_storehouse_by_id(ElementID id) { return storehouse_.find_by_id(id); }
     NodeCollection<Storehouse>::const_iterator find_storehouse_by_id(ElementID id) const { return storehouse_.find_by_id(id); }
     NodeCollection<Storehouse>::const_iterator storehouse_cbegin() const { return storehouse_.cbegin(); }
     NodeCollection<Storehouse>::const_iterator storehouse_cend() const { return storehouse_.cend(); }

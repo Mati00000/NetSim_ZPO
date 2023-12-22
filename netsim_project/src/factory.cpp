@@ -51,6 +51,36 @@ void Factory::remove_storehouse(ElementID id) {
     storehouse_.remove_by_id(id);
 }
 
+enum class node_colour { NOT_VISITED, VISITED, CHECKED }; /// nwm czy to ma być zdefiniowane w metodzie czy poza nią i czy w tym pliku czy w nagłówkowym
+
+bool Factory::is_consistent() const { /// not finished
+
+
+    return false;
+}
+
+void Factory::do_deliveries(Time time) {
+    for(auto e = ramp_.begin(); e != ramp_.end(); e++){
+        e->deliver_goods(time);
+    }
+
+}
+
+void Factory::do_work(Time time) {
+    for(auto e = worker_.begin(); e != worker_.end(); e++){
+        e->do_work(time);
+    }
+}
+
+void Factory::do_package_passing() {
+    for(auto e = ramp_.begin(); e != ramp_.end(); e++){
+        e->send_package();
+    }
+    for(auto e = worker_.begin(); e != worker_.end(); e++){
+        e->send_package();
+    }
+}
+
 template <typename Node>
 void Factory::remove_receiver(NodeCollection<Node>& collection, ElementID id) {
     for (auto& node : collection) {
