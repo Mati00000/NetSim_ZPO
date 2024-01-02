@@ -117,6 +117,8 @@ public:
 
     ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; };
 
+    std::optional<Package> const& get_processing_buffer() const { return bufor_; }
+
 private:
     ElementID id_;
     TimeOffset pd_;
