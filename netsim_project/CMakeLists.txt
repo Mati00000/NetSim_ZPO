@@ -11,6 +11,8 @@ include_directories(
 )
 
 set(SOURCE_FILES
+        src/simulation.cpp
+        src/reports.cpp
         src/factory.cpp
         src/helpers.cpp
         src/nodes.cpp
@@ -21,6 +23,7 @@ set(SOURCE_FILES
 add_executable(${PROJECT_ID} ${SOURCE_FILES} main.cpp)
 
 set(SOURCE_FILES_TESTS
+        test/test_factory_io.cpp
         test/test_Factory.cpp
         test/test_nodes.cpp
         test/test_package.cpp

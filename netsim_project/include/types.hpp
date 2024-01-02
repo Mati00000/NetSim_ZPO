@@ -3,9 +3,9 @@
 
 #include <functional>
 
-using ElementID = unsigned long long;
-using Time = unsigned long long;
-using TimeOffset = unsigned long long;
+using ElementID = int;
+using Time = int;
+using TimeOffset = int;
 using ProbabilityGenerator = std::function<double()>;
 
 #endif /* TYPES_HPP_ */

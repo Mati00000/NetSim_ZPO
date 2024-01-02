@@ -106,6 +106,8 @@ public:
     const_iterator begin() const override { return q_->begin(); }
     const_iterator end() const override { return q_->end(); }
 
+    IPackageQueue *get_queue() const { return q_.get(); }
+
     void do_work(Time t);
     TimeOffset get_processing_duration() const { return pd_; }
     Time get_package_processing_start_time() const { return t_; }

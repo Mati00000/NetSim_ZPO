@@ -2,6 +2,7 @@
 #define STORAGE_TYPES_HPP_
 
 #include "package.hpp"
+#include "types.hpp"
 #include <list>
 
 enum class PackageQueueType {

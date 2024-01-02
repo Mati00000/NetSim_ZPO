@@ -4,20 +4,38 @@
 #include "nodes.hpp"
 #include "types.hpp"
 #include "algorithm"
-#include <stdexcept>
 
-template <typename Node>
+#include <stdexcept>
+#include <list>
+#include <map>
+
+template <class Node>
 class NodeCollection {
 public:
     using container_t = typename std::list<Node>;
     using iterator = typename container_t::iterator;
     using const_iterator = typename container_t::const_iterator;
 
-    void add(Node&& node);
-    void remove_by_id(ElementID id);
+    void add(Node&& node) { nodes_.emplace_back(std::move(node)); }
 
-    NodeCollection<Node>::iterator find_by_id(ElementID id);
-    NodeCollection<Node>::const_iterator find_by_id(ElementID id) const;
+    void remove_by_id(ElementID id) {
+        auto it = find_by_id(id);
+        if (it != nodes_.end()) {
+            nodes_.erase(it);
+        }
+    }
+
+    NodeCollection<Node>::iterator find_by_id(ElementID id) {
+        return std::find_if(nodes_.begin(), nodes_.end(), [id](const Node& node) {
+            return node.get_id() == id;
+        });
+    }
+
+    NodeCollection<Node>::const_iterator find_by_id(ElementID id) const {
+        return std::find_if(nodes_.cbegin(), nodes_.cend(), [id](const Node& node) {
+            return node.get_id() == id;
+        });
+    }
 
     NodeCollection<Node>::iterator begin() { return nodes_.begin(); }
     NodeCollection<Node>::iterator end() { return nodes_.end(); }
@@ -29,6 +47,25 @@ public:
 
 private:
     container_t nodes_;
+};
+
+
+class Ramps : public NodeCollection<Ramp> {
+public:
+    Ramps() = default;
+    ~Ramps() = default;
+};
+
+class Workers : public NodeCollection<Worker> {
+public:
+    Workers() = default;
+    ~Workers() = default;
+};
+
+class Storehouses : public NodeCollection<Storehouse> {
+public:
+    Storehouses() = default;
+    ~Storehouses() = default;
 };
 
 
@@ -68,11 +105,28 @@ public:
 
 private:
     template<typename Node>
-    void remove_receiver(NodeCollection<Node>& collection, ElementID id);
+    void remove_receiver(NodeCollection<Node>& collection, ElementID id) {
+        for (auto& node : collection) {
+            node.remove_receiver(id);
+        }
+    }
 
     NodeCollection<Ramp> ramp_;
     NodeCollection<Worker> worker_;
     NodeCollection<Storehouse> storehouse_;
 };
+
+enum class node_colour {
+    NOT_VISITED, VISITED, CHECKED
+};
+
+enum ElementType {
+    RAMP, WORKER, STOREHOUSE, LINK
+};
+
+Factory load_factory_structure(std::istream& is);
+
+void save_factory_structure(Factory& factory, std::ostream& os);
+
 
 #endif /* FACTORY_HPP_ */
