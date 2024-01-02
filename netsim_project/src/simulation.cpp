@@ -1,4 +1,6 @@
 #include "simulation.hpp"
+#include "types.hpp"
+#include "factory.hpp"
 
 void simulate(Factory& f,TimeOffset d, const std::function<void (Factory&, Time)>& rf) {
     if(!f.is_consistent())

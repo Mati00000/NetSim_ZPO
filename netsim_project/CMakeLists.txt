@@ -23,6 +23,8 @@ set(SOURCE_FILES
 add_executable(${PROJECT_ID} ${SOURCE_FILES} main.cpp)
 
 set(SOURCE_FILES_TESTS
+        test/test_simulate.cpp
+        test/test_reports.cpp
         test/test_factory_io.cpp
         test/test_Factory.cpp
         test/test_nodes.cpp
