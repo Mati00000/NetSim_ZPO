@@ -18,7 +18,7 @@ void sort_receivers(std::vector<IPackageReceiver*>& receivers) {
     });
 }
 
-void Reports::generate_structure_report(const Factory& f, std::ostream& os) {
+void generate_structure_report(const Factory& f, std::ostream& os) {
     os << "== LOADING RAMPS ==" << std::endl;
     auto ramps = f.ramp_cbegin();
     while (ramps != f.ramp_cend()) {
@@ -62,7 +62,7 @@ void Reports::generate_structure_report(const Factory& f, std::ostream& os) {
     }
 }
 
-void Reports::generate_simulation_turn_report(const Factory& f, std::ostream& os, Time t) {
+void generate_simulation_turn_report(const Factory& f, std::ostream& os, Time t) {
     os << "=== [ Turn: " << t << " ] ===" << std::endl;
 
     os << "== WORKERS ==" << std::endl;
